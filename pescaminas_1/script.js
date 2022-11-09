@@ -8,9 +8,9 @@ function inicialitzaJoc() {
         for (let j = 0; j < y; j++) {
             let celda = filaActual.insertCell(j);
             celda.innerHTML = '&nbsp;&nbsp;&nbsp;'
+            celda.setAttribute("id", "X:" + i + " " + "Y:" + j);
         }
     }
-    matriuBinaria(selectorTabla());
 }
 
 //FUNCION QUE SELECCIONA LA TABLA PINTADA EN EL HTML
@@ -29,9 +29,9 @@ function matriuBinaria(matrix) {
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[0].length; j++) {
             if (matrix[i][j].style.backgroundColor == "red") {
-                matrix2[i][j].innerHTML = "<center>" + "&nbsp; 1 &nbsp;" + "</center>";
+                matrix2[i][j].innerHTML = "1";
             } else {
-                matrix2[i][j].innerHTML = "<center>" + "&nbsp; 0 &nbsp;" + "</center>";
+                matrix2[i][j].innerHTML = "0";
             }
         }
     }
@@ -49,8 +49,14 @@ function inicialitzaMines(nminas, x, y) {
         for (let j = 0; j < y; j++) {
             if (contador != nminas) {
                 for (let k = 0; k < nminas; k++) {
-                    minas[Math.round(Math.random() * (x - 1))][Math.round(Math.random() * (y - 1))] = 1;
-                    contador++;
+                    let numero1 = Math.round(Math.random() * (x - 1));
+                    let numero2 = Math.round(Math.random() * (y - 1));
+                    if (!minas[numero1][numero2] == 1) {
+                        minas[numero1][numero2] = 1;
+                        contador++;
+                    } else {
+                        k--;
+                    }
                 }
             }
             if (minas[i][j] != 1) {
@@ -84,4 +90,44 @@ function iniciarMinas() {
     let y = parseInt(document.getElementById("y").value);
     let minasIniciadas = inicialitzaMines(5, x, y);
     pintaMinas(minasIniciadas);
+
+}
+
+//FUNCION ONCLICK
+
+document.addEventListener("click", (e) => {
+    if (e.target.tagName == 'TD') {
+        console.log(e.target.id)
+        let regex = /(\d+)/g;
+        let string = e.target.id.split(' ');
+        let x = parseInt(string[0].match(regex));
+        let y = parseInt(string[1].match(regex));
+        buscaminas(x, y);
+    }
+})
+
+// NUMEROS BUSCAMINAS //
+
+function contador(x, y) {
+    matrix = selectorTabla();
+    let contador = 0;
+    for (let i = x - 1; i < x + 2; i++) {
+        for (let j = y - 1; j < y + 2; j++) {
+            try {
+                if (i == x - 1 || i == x + 1) {
+                    if (matrix[i][j].style.backgroundColor == "red") { contador++; }
+                } else {
+                    if (j == y + 1 || j == y - 1) {
+                        if (matrix[i][j].style.backgroundColor == "red") { contador++; }
+                    }
+                }
+            } catch (error) {}
+        }
+    }
+    return contador;
+}
+
+function buscaminas(x, y) {
+    matrix = selectorTabla();
+    matrix[x][y].innerHTML = "<center>" + contador(x, y) + "</center>";
 }
