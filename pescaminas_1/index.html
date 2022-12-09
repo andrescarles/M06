@@ -6,20 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="script.js"></script>
+
 </head>
 
 <body>
-    <button onclick="inicialitzaJoc()">boton</button>
-    <input type="number" id="x">
-    <input type="number" id="y">
-    <div>
-        <table id="tabla" border="1"></table>
+    <button id="boton" onclick="inicialitzaJoc()">DIMENSIÓN TABLA</button>
+    <input type="number" id="x" placeholder="X">
+    <input type="number" id="y" placeholder="Y">
+    <input type="number" id="numeroMinas" placeholder="NUMERO DE MINAS">
+    <div id="lost" style="color: red;font-size: 5rem;display: none;">
+        HAS PERDIDO.
     </div>
+    <div id="win" style="color: red;font-size: 5rem;display: none;">
+        HAS GANADO.
+    </div>
+    <div style="display:flex">
+        <div style="margin-right:40px">
+            <table id="tabla" border="1"></table>
+        </div>
+        <h1 id="crono" style="display:none"><time>00:00:00</time></h1>
+    </div>
+    <br><br>
+    <input type="button" value="REINICIAR" onclick="location.reload()" />
     <br>
-    <button onclick="iniciarMinas()">Iniciar minas</button>
+    <p><b>puntuaciones: </b></p>
+    <ul id="ul"></ul>
 
 
+    <script src="script.js"></script>
 </body>
 
 </html>
